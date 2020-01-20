@@ -41,3 +41,13 @@ func insert(a []int, v int, f func(int, int) bool) []int {
 	sorted = append(sorted, v)
 	return append(sorted, a...)
 }
+
+func AndMap(slice []int, f func(int) bool) bool {
+	for _, v := range slice {
+		if !f(v) {
+			return false
+		}
+	}
+
+	return true
+}
