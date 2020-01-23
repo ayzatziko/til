@@ -51,3 +51,13 @@ func AndMap(slice []int, f func(int) bool) bool {
 
 	return true
 }
+
+func OrMap(slice []int, f func(int) bool) bool {
+	for _, v := range slice {
+		if f(v) {
+			return true
+		}
+	}
+
+	return false
+}
