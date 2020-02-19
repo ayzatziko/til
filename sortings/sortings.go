@@ -81,7 +81,83 @@ func filterValue(arr []Value, f func(Value) bool) []Value {
 }
 
 func HeapSort(arr []Value) []Value {
-	return nil
+	if arr == nil || len(arr) == 0 {
+		return nil
+	}
+
+	h := makeHeap(len(arr))
+	for _, v := range arr {
+		h = heapInsert(h, v)
+	}
+
+	return popAll(h)
+}
+
+type heap []Value
+
+func makeHeap(l int) heap {
+	v := 2
+	for v < l {
+		v *= 2
+	}
+	return make([]Value, 1, v)
+}
+
+func heapInsert(h heap, v Value) heap {
+	h = append(h, v)
+	h = heapifyUp(h, len(h)-1)
+	return h
+}
+
+func heapifyUp(h heap, lid int) heap {
+	if lid <= 1 {
+		return h
+	}
+
+	pid := lid / 2
+	if !sortFunc(h[pid], h[lid]) {
+		h[pid], h[lid] = h[lid], h[pid]
+		return heapifyUp(h, pid)
+	}
+
+	return h
+}
+
+func popAll(h heap) []Value {
+	arr := make([]Value, 0, len(h)-1)
+
+	for len(h) > 1 {
+		arr = append(arr, h[1])
+		last := len(h) - 1
+		h[1] = h[last]
+		h = h[:last]
+		heapifyDown(h, 1)
+	}
+
+	return arr
+}
+
+func heapifyDown(h heap, pid int) heap {
+	if len(h) <= 1 || pid > len(h) {
+		return h
+	}
+
+	lid := pid * 2
+	rid := pid*2 + 1
+	if lid > len(h)-1 {
+		return h
+	}
+
+	min := lid
+	if rid < len(h)-1 && !sortFunc(h[min], h[rid]) {
+		min = rid
+	}
+
+	if !sortFunc(h[pid], h[min]) {
+		h[pid], h[min] = h[min], h[pid]
+		return heapifyDown(h, min)
+	}
+	return h
 }
 
 func BubbleSort(arr []Value) []Value {

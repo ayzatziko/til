@@ -26,12 +26,15 @@ func TestSorting(t *testing.T) {
 		"quick sort":  QuickSort,
 		"bubble sort": BubbleSort,
 		"merge sort":  MergeSort,
-		// "heap sort":     HeapSort,
+		"heap sort":   HeapSort,
 	}
 
 	for sortType, sort := range sortFuncs {
 		for _, ee := range testValues {
-			tee := make([]Value, len(ee))
+			var tee []Value
+			if len(ee) > 0 {
+				tee = make([]Value, len(ee))
+			}
 			copy(tee, ee)
 			got := sort(tee)
 			if !areSorted(got) {
