@@ -1,3 +1,4 @@
+// problem #128 (https://leetcode.com/problems/longest-consecutive-sequence/)
 package leetcode
 
 import "testing"
