@@ -10,7 +10,6 @@ func LongestConsecutive(nums []int) int {
 					return i
 				}
 			}
-			panic("unreachable")
 		}
 	)
 
