@@ -30,9 +30,23 @@ func TestShiftzeros(t *testing.T) {
 				}
 			})
 
-			tc.arr = orig
+			copy(tc.arr, orig)
 			t.Run("optimized", func(t *testing.T) {
-				shiftzeros(tc.arr)
+				shiftzerosOptimized(tc.arr)
+				if len(tc.arr) != len(tc.res) {
+					t.Fatalf("expected %v, got %v", tc.res, tc.arr)
+				}
+
+				for i, v := range tc.res {
+					if v != tc.arr[i] {
+						t.Fatalf("expected %v, got %v", tc.res, tc.arr)
+					}
+				}
+			})
+
+			copy(tc.arr, orig)
+			t.Run("recursive", func(t *testing.T) {
+				shiftZerosRecursive(tc.arr)
 				if len(tc.arr) != len(tc.res) {
 					t.Fatalf("expected %v, got %v", tc.res, tc.arr)
 				}

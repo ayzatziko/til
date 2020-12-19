@@ -71,3 +71,28 @@ func shiftzerosOptimized(arr []int) {
 		lzero, lnonzero = zero, nonzero
 	}
 }
+
+func shiftZerosRecursive(ints []int) {
+	onZero := next(ints, func(v int) bool { return v == 0 })
+	nonZero := next(onZero, func(v int) bool { return v != 0 })
+
+	if onZero == nil || nonZero == nil {
+		return
+	}
+
+	onZero[0] = nonZero[0]
+	nonZero[0] = 0
+	shiftZerosRecursive(onZero[1:])
+}
+
+func next(ints []int, f func(int) bool) []int {
+	if len(ints) == 0 {
+		return nil
+	}
+
+	if f(ints[0]) {
+		return ints
+	}
+
+	return next(ints[1:], f)
+}
