@@ -122,7 +122,31 @@ func TestLearnTemplates(t *testing.T) {
 		}); err != nil {
 			t.Fatalf("exec template: %v", err)
 		}
+	})
 
+	t.Run("Complex", func(t *testing.T) {
+		baset := template.Must(template.New("Base").Parse(`1. Here is static stuff from base template.
+2. Here is content: {{ template "content" }}
+{{ define "content" }}Content defined in "Base" template.
+{{ end }}`))
+
+		altt := template.Must(template.Must(baset.Clone()).Parse(`{{ define "content" }}Alternative content.
+{{ end }}`))
+
+		anotheraltt := template.Must(template.Must(baset.Clone()).Parse(`{{ define "content" }}Another Alternative content.
+{{ end }}`))
+
+		if err := baset.Execute(os.Stdout, nil); err != nil {
+			t.Fatalf("exec base template: %v", err)
+		}
+
+		if err := altt.Execute(os.Stdout, nil); err != nil {
+			t.Fatalf("exec alternative template: %v", err)
+		}
+
+		if err := anotheraltt.Execute(os.Stdout, nil); err != nil {
+			t.Fatalf("exec another alternative template: %v", err)
+		}
 	})
 }
 
